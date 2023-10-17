@@ -11,7 +11,11 @@ def play(score, state_data, screen_obj, g_states):
     while score < 50:
         guess = get_text_box(my_title=f"Guess State Name {score}/50",
                              my_prompt=prompt, screen_obj=screen_obj)
-        score = check_answer(score, state_data, guess, screen_obj, g_states)
+        if guess is not None:
+            score = check_answer(score, state_data, guess, screen_obj, g_states)
+        else:
+            get_missed_states(screen_obj, state_data, g_states)
+            break
 
 def check_answer(score, s_data, my_guess, my_screen, g_states):
     states = s_data["state"].to_list()
@@ -36,6 +40,17 @@ def get_state(my_state, s_data, my_screen):
     new_turtle.write(text)
     my_screen.update()
     return new_turtle
+
+def get_missed_states(screen_obj, s_data, g_states):
+    missed_states = []
+    state_list = s_data.state.to_list()
+    for state in state_list:
+        if state not in g_states:
+            missed_states.append(state)
+    state_dict = {}
+    state_dict["Missed States"] = missed_states
+    missed_data = p.DataFrame(state_dict)
+    missed_data.to_csv("missed_states.csv")
 
 
 my_screen = t.Screen()
