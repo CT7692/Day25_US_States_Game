@@ -9,9 +9,8 @@ def get_text_box(my_title, my_prompt, screen_obj):
 def play(score, state_data, screen_obj, g_states):
     prompt = "Can you guess any of the state names?"
     while score < 50:
-        guess = get_text_box(my_title=f"Guess State Name {score}/50",
-                             my_prompt=prompt, screen_obj=screen_obj)
-        if guess is not None:
+        if (guess := get_text_box(my_title=f"Guess State Name {score}/50",
+                             my_prompt=prompt, screen_obj=screen_obj)) is not None:
             score = check_answer(score, state_data, guess, screen_obj, g_states)
         else:
             get_missed_states(screen_obj, state_data, g_states)
